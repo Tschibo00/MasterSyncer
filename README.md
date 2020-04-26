@@ -9,5 +9,6 @@
 - Press Start/Stop to start/stop the sequencer.
 - First beat flashes both key leds, consecutive flashes only yellow.
 - All configurations including BPM are stored in EEPROM, thus are still available after switching off.
+
 That's basically it.
 Have fun building and syncing all your devices.
