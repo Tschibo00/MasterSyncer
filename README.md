@@ -1,5 +1,5 @@
 # MasterSyncer
-## Features
+## Features / "Manual"
 - Universal master clock for snyc-triggered synths.
 - BPM goes from 1-999
 - By pressing Select you get to the channel selection. Select the required channel 1-9 by turning the encoder.
