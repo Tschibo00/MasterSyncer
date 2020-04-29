@@ -1,4 +1,5 @@
 # MasterSyncer
+## Features
 - Universal master clock for snyc-triggered synths.
 - BPM goes from 1-999
 - By pressing Select you get to the channel selection. Select the required channel 1-9 by turning the encoder.
@@ -12,6 +13,15 @@
 
 That's basically it.
 Have fun building and syncing all your devices.
+
+## Recommended settings
+| Machine | PPQ | Length | Delay | Comments |
+| -- | -- | -- | -- | -- |
+| Teenage Engineering PO-12 | 2 positive | 3.0 | 0 | |
+| Teenage Engineering PO-14 | 2 positive | 3.0 | 0 | |
+| Korg Volca Sample | 2 positive | 1.0 | 0 | |
+| Korg Volca Bass | 2 positive | 1.0 | 0 | |
+| Behringer TD-3 | 24 positive | 0.1 | ? | Use stereo cable, set TD-3 to 24PPQ |
 
 # Todos
 - Implement configurable delay (-200..+200ms) for each channel as some machines seem to be a bit off with the timing (e.g. Behringer TD-3)
