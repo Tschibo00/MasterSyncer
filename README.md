@@ -17,11 +17,11 @@ Have fun building and syncing all your devices.
 ## Recommended settings
 | Machine | PPQ | Length | Delay | Comments |
 | -- | -- | -- | -- | -- |
-| Teenage Engineering PO-12 | 2 positive | 3.0 | 0 | |
-| Teenage Engineering PO-14 | 2 positive | 3.0 | 0 | |
-| Korg Volca Sample | 2 positive | 1.0 | 0 | |
-| Korg Volca Bass | 2 positive | 1.0 | 0 | |
-| Behringer TD-3 | 24 positive | 0.1 | ? | Use stereo cable, set TD-3 to 24PPQ |
+| Teenage Engineering PO-12 | 2 (positive pulse) | 3.0 | 0 | |
+| Teenage Engineering PO-14 | 2 (positive pulse) | 3.0 | 0 | |
+| Korg Volca Sample | 2 (positive pulse) | 1.0 | 0 | |
+| Korg Volca Bass | 2 (positive pulse) | 1.0 | 0 | |
+| Behringer TD-3 | 24 (positive pulse) | 0.1 | ? | Use stereo cable, set TD-3 to 24PPQ |
 
 # Todos
 - Implement configurable delay (-200..+200ms) for each channel as some machines seem to be a bit off with the timing (e.g. Behringer TD-3)
