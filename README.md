@@ -26,3 +26,4 @@ Have fun building and syncing all your devices.
 # Todos
 - Implement configurable delay (-200..+200ms) for each channel as some machines seem to be a bit off with the timing (e.g. Behringer TD-3)
 - Add table with recommended settings for several machines
+- Cleanup code, consistently prefix every private member/method with _
