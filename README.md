@@ -23,7 +23,13 @@ Have fun building and syncing all your devices.
 | Korg Volca Bass | 2 (positive pulse) | 1.0 | 0 | |
 | Behringer TD-3 | 24 (positive pulse) | 0.1 | ? | Use stereo cable, set TD-3 to 24PPQ |
 
+## Timing adjustment
+Due to Arduino's imprecise quartz the timing probably needs adjustment first.
+Therefore uncomment the line #define TIME_MEASURE, upload the code and get a precise stopwatch.
+Press start on the syncer and on the stopwatch simultaneously. Check for example after 60 secs how much the display is off.
+E.g. if it reads 58 instead of 60 the timer is off by about 3%, thus decrese OCR1A's value by about 3% and repeat measuring until it's as precise as possible.
+The theoretically correct value for OCR1A would be 1599, however on my Arduino the value was off by almost 5% :-D
+
 # Todos
 - Implement configurable delay (-200..+200ms) for each channel as some machines seem to be a bit off with the timing (e.g. Behringer TD-3)
-- Add table with recommended settings for several machines
 - Cleanup code, consistently prefix every private member/method with _
