@@ -16,6 +16,8 @@
  */
 
 #define NUM_CHANNELS 9
+//#define TIME_MEASURE    // define to run in time measurement mode to adjust for Arduino's imprecise quartz
+                        // adjust OCR1A in setup => decrease if to slow, increase if too fast
 
 DigiEnc *encBPM, *encChannel;
 KeyboardController *keys;
@@ -42,12 +44,12 @@ void setup() {
 
   cli();//disable interrupts
   //set timer1 interrupt at 10000Hz
-  TCCR1A = 0;// set entire TCCR1A register to 0
-  TCCR1B = 0;// same for TCCR1B
-  TCNT1 = 0;//initialize counter value to 0
-  OCR1A=24; // (16.000.000/64/10000)-1 = 25-1
-  TCCR1B |= (1 << WGM12);  // turn on CTC mode
-  TCCR1B |= (1 << CS11) | (1 << CS10);      // Set CS10 and CS11 bits for 64 prescaler
+  TCCR1A = 0;                   // set entire TCCR1A register to 0
+  TCCR1B = 0;                   // same for TCCR1B
+  TCNT1 = 0;                    //initialize counter value to 0
+  OCR1A=1508;                   // (16.000.000/10000)-1 = 1600-1
+  TCCR1B |= (1 << WGM12);       // turn on CTC mode
+  TCCR1B |= 1 << CS10;          // Set prescaler=1
   TIMSK1 |= (1 << OCIE1A);      // enable timer compare interrupt
   sei();//enable interrupts
 
@@ -56,16 +58,32 @@ void setup() {
     encBPM->val=120;
 }
 
+#ifdef TIME_MEASURE
+long timetest=0;
+#endif
+
 // maybe needs a little adjustment, as 10000 IRQs are 1.05s long by measurement via micros()
+// 58 beats in 60 seconds
 // so either the interrupt is off or the micros() timer is off :)
 ISR(TIMER1_COMPA_vect){
+  #ifdef TIME_MEASURE
+  if (isRunning)
+    timetest++;
+  hwc->update();
+  keys->readKeys();
+  return;
+  #endif
+  
   if (isRunning){
-    hwc->led_key=(pos==0) | (pos%48==0?2:0);
+    if (pos==0)
+      hwc->led_key=1;
+    else
+      hwc->led_key=pos%48==0?2:0;
     bpmPos++;
     if (bpmPos>=bpmWaiter){
       for (uint8_t i=0;i<NUM_CHANNELS;i++)
         channels[i]->setPos(pos);
-      bpmPos=0;
+      bpmPos-=bpmWaiter;
       pos++;
       if (pos==192) pos=0;
     }
@@ -88,6 +106,16 @@ ISR(TIMER1_COMPA_vect){
 }
 
 void loop() {
+#ifdef TIME_MEASURE
+  while(1){
+    if (keys->getKeyClick(0))
+    isRunning=true;
+      hwc->displayNumber(timetest/10000);
+    hwc->signalUpdateDisplay();
+    delay(1);       // avoid too frequent updates to the display
+  }
+#endif
+  
   while(1){
     if (countdownFallbackToBPMDisplay>0){   // channel selection mode
       if (keys->getKeyClick(1)){

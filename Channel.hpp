@@ -25,6 +25,7 @@ class Channel {
     uint8_t displayState=STATE_CHANNEL;
 
     Channel(HWController *hwc,uint8_t channelNumber);
+    void setSyncType(uint8_t syncType);
     void setSyncType(int ppq, bool positivePulse);
     void processEnc();
     bool getTrigger(){

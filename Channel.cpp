@@ -10,16 +10,19 @@ Channel::Channel(HWController *hwc,uint8_t channelNumber) {
     _encLength->val=EEPROM.read(_channelNumber*2);
   else
     _encLength->val=10;
-  if (EEPROM.read(_channelNumber*2+1)!=255)
+  if (EEPROM.read(_channelNumber*2+1)!=255){
     _encSyncType->val=EEPROM.read(_channelNumber*2+1);
-  else
+    setSyncType(_encSyncType->val);
+  }else{
     _encSyncType->val=1;
+    setSyncType(_encSyncType->val);
+  }
 }
 
 void Channel::processEnc(){
   if (displayState==STATE_PPQ) {
     _encSyncType->process();
-    setSyncType(syncTypeppqList[_encSyncType->val], syncTypePulseList[_encSyncType->val]);
+    setSyncType(_encSyncType->val);
     if (_encSyncType->isUsed())
       EEPROM.update(_channelNumber*2+1,_encSyncType->val);
   }
@@ -28,6 +31,10 @@ void Channel::processEnc(){
     if (_encLength->isUsed())
       EEPROM.update(_channelNumber*2,_encLength->val);
   }
+}
+
+void Channel::setSyncType(uint8_t syncType){
+  setSyncType(syncTypeppqList[syncType], syncTypePulseList[syncType]);
 }
 
 void Channel::setSyncType(int ppq, bool positivePulse){
