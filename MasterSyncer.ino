@@ -23,6 +23,7 @@ DigiEnc *encBPM, *encChannel;
 KeyboardController *keys;
 HWController *hwc;
 long countdownFallbackToBPMDisplay=0;
+int countdownFallbackToStepper=0;
 unsigned char currentChannel=1;
 int pos=0;                // position in track, i.e. 16 steps and 48PPQ=>192 positions per track (is divided if lower PPQ is configured for channel)
 bool isRunning=false;
@@ -100,6 +101,8 @@ ISR(TIMER1_COMPA_vect){
   // user interface stuff
   countdownFallbackToBPMDisplay--;
   if (countdownFallbackToBPMDisplay<0) countdownFallbackToBPMDisplay=0;
+  countdownFallbackToStepper--;
+  if (countdownFallbackToStepper<0) countdownFallbackToStepper=0;
   
   hwc->update();
   keys->readKeys();
@@ -156,9 +159,13 @@ void loop() {
       if (encBPM->isUsed()){
         EEPROM.update(0,(encBPM->val)>>8);
         EEPROM.update(1,(encBPM->val)&255);
+        countdownFallbackToStepper=5000;
       }
       bpmWaiter=12500/encBPM->val;
-      hwc->displayNumber(encBPM->val);
+      if (isRunning && countdownFallbackToStepper==0)
+        hwc->displayFloat(pos/48+((float)(pos%48))/120.f+1.1);
+      else
+        hwc->displayNumber(encBPM->val);
     }
     if (keys->getKeyClick(0))
       isRunning=!isRunning;
